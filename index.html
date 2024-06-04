@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kalkulator cenah</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--background-color, #f4f4f9);
+            font-family: Arial, sans-serif;
+        }
+        .calculator {
+            background: var(--calculator-background, #000);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            width: 320px;
+        }
+        .display {
+            font-size: 2.5em;
+            padding: 20px;
+            background: var(--display-background, #000);
+            color: var(--display-color, #ff69b4);
+            border-radius: 10px;
+            text-align: right;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-color, #ff69b4);
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .btn {
+            padding: 20px;
+            background: var(--button-background, #333);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.5em;
+            color: var(--button-color, #ff69b4);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: var(--button-hover-background, #555);
+        }
+        .btn.orange {
+            background: #ff69b4;
+            color: #000;
+        }
+        .btn.orange:hover {
+            background: #ff85c2;
+        }
+        .btn.gray {
+            background: #a6a6a6;
+            color: #000;
+        }
+        .btn.gray:hover {
+            background: #b8b8b8;
+        }
+        .btn.double {
+            grid-column: span 2;
+        }
+        .btn.tall {
+            grid-row: span 2;
+        }
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: middle;
+        }
+        .footer-text {
+            text-align: center;
+            font-size: 0.8em;
+            margin-top: 20px;
+            color: var(--footer-text-color, #ff69b4);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #121212;
+                --calculator-background: #1e1e1e;
+                --display-background: #1e1e1e;
+                --display-color: #ff69b4;
+                --border-color: #ff69b4;
+                --button-background: #444444;
+                --button-color: #ff69b4;
+                --button-hover-background: #555555;
+                --footer-text-color: #ff69b4;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="btn gray" onclick="clearDisplay()">C</button>
+            <button class="btn gray" onclick="appendCharacter('/')">/</button>
+            <button class="btn gray" onclick="appendCharacter('*')">*</button>
+            <button class="btn orange" onclick="deleteLast()">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path><line x1="18" y1="9" x2="12" y2="15"></line><line x1="12" y1="9" x2="18" y2="15"></line></svg>
+            </button>
+            <button class="btn" onclick="appendCharacter('7')">7</button>
+            <button class="btn" onclick="appendCharacter('8')">8</button>
+            <button class="btn" onclick="appendCharacter('9')">9</button>
+            <button class="btn orange" onclick="appendCharacter('-')">-</button>
+            <button class="btn" onclick="appendCharacter('4')">4</button>
+            <button class="btn" onclick="appendCharacter('5')">5</button>
+            <button class="btn" onclick="appendCharacter('6')">6</button>
+            <button class="btn orange" onclick="appendCharacter('+')">+</button>
+            <button class="btn" onclick="appendCharacter('1')">1</button>
+            <button class="btn" onclick="appendCharacter('2')">2</button>
+            <button class="btn" onclick="appendCharacter('3')">3</button>
+            <button class="btn orange tall" onclick="calculateResult()">=</button>
+            <button class="btn double" onclick="appendCharacter('0')">0</button>
+            <button class="btn" onclick="appendCharacter('.')">.</button>
+        </div>
+    </div>
+    <p class="footer-text">tara, tara mandi</p>
+    <script>
+        let display = document.getElementById('display');
+        let lastInput = '';
+
+        function appendCharacter(char) {
+            if (display.innerText === '0' || lastInput === '=') {
+                display.innerText = char;
+            } else {
+                display.innerText += char;
+            }
+            lastInput = char;
+        }
+
+        function clearDisplay() {
+            display.innerText = '0';
+            lastInput = '';
+        }
+
+        function deleteLast() {
+            if (display.innerText.length > 1) {
+                display.innerText = display.innerText.slice(0, -1);
+            } else {
+                display.innerText = '0';
+            }
+            lastInput = '';
+        }
+
+        function calculateResult() {
+            if (lastInput === '=') {
+                return;
+            }
+            try {
+                let result = eval(display.innerText);
+                display.innerText = result === 26 ? 'hyu deh balik ka 26 dei' : result;
+                lastInput = '=';
+            } catch {
+                display.innerText = 'Error';
+                lastInput = '';
+            }
+        }
+    </script>
+</body>
+</html>
